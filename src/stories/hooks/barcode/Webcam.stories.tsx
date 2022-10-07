@@ -1,5 +1,5 @@
 import { ComponentStory } from '@storybook/react';
-import { useWebcam } from '../../../hooks/barcode/useWebcam';
+import { useWebcam } from '../../../hooks';
 
 const WebcamStories = (props: any) => {
     const { webcamVideoRef, hasPermission } = useWebcam();
@@ -13,7 +13,7 @@ const WebcamStories = (props: any) => {
 
 export default {
     component: WebcamStories,
-    title: 'Camera/Webcam',
+    title: 'Video/Webcam',
 };
 
 const Template: ComponentStory<typeof WebcamStories> = (args: any) => <WebcamStories {...args}/>

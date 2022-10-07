@@ -48,7 +48,7 @@ const useStreamToVideoElement = (videoElement: HTMLVideoElement | null, stream: 
         }
 
         return () => { active = false; };
-    }, [stream]);
+    }, [stream, videoElement, isStreaming]);
 
     return { isStreaming };
 };

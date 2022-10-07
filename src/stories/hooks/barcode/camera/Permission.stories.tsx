@@ -1,5 +1,5 @@
 import { ComponentStory } from '@storybook/react';
-import { useHasCameraPermission } from '../../../../hooks/barcode/camera/permission';
+import { useHasCameraPermission } from '../../../../hooks';
 
 const CameraPermissionExample = (props: any) => {
     const { Component, ...rest } = props;

@@ -1,5 +1,5 @@
 import { ComponentStory } from '@storybook/react';
-import { useGetDeviceList } from '../../../../hooks/barcode/camera/devices';
+import { useGetDeviceList } from '../../../../hooks';
 
 const DeviceListStories = (props: any) => {
     const { hasPermission } = props;
