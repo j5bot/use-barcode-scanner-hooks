@@ -44,7 +44,7 @@ export const useVideoCanvas = (options: UseVideoCanvasOptions) => {
             canvas.height,
         ];
 
-    }, [canvasRef, webcamVideoRef, zoom]);
+    }, [canvasRef.current, webcamVideoRef.current, zoom]);
 
     const streamToCanvas = useCallback(() => {
         const videoElement = webcamVideoRef.current;
@@ -59,22 +59,17 @@ export const useVideoCanvas = (options: UseVideoCanvasOptions) => {
 
         window.setTimeout(streamToCanvas, 17);
 
-    }, [context, bounds, onDraw, webcamVideoRef]);
+    }, [context]);
 
     useEffect(() => {
-        const listener = () => {
-            streamToCanvas();
-        };
-
-        const wcvrc = webcamVideoRef.current;
-
         if (hasPermission && context) {
             if (!hasListener) {
-                webcamVideoRef.current?.addEventListener('play', listener);
+                webcamVideoRef.current?.addEventListener('play', (event) => {
+                    streamToCanvas();
+                });
                 setHasListener(true);
             }
         }
-        return () => wcvrc?.removeEventListener('play', listener);
-    }, [hasListener, hasPermission, context, streamToCanvas, webcamVideoRef]);
+    }, [hasPermission, context]);
 
 };

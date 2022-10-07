@@ -8,7 +8,7 @@ export const use2DContext = () => {
         if (canvasRef.current) {
             setContext(canvasRef.current?.getContext('2d'));
         }
-    }, [setContext]);
+    }, [canvasRef.current, setContext]);
 
     return { canvasRef, context };
 };
