@@ -20,25 +20,25 @@ const getBarcodeDetector = async (options: BarcodeDetectorOptions) => {
     const hasNative = 'BarcodeDetector' in window;
     if (!hasNative) {
         return BarcodeDetectorPolyfill.getSupportedFormats().then(() => {
-            return Promise.resolve(new BarcodeDetectorPolyfill(options));
+            barcodeDetector = new BarcodeDetectorPolyfill(options);
+            return Promise.resolve(barcodeDetector);
         })
     }
-    return Promise.resolve(new window.BarcodeDetector(options));
+    barcodeDetector = new window.BarcodeDetector(options);
+    return Promise.resolve(barcodeDetector);
 };
 
-export const useScanCanvas = (canvasRef: MutableRefObject<HTMLCanvasElement | null>, context?: CanvasRenderingContext2D | null) => {
+export const useScanCanvas = (canvasRef: MutableRefObject<HTMLCanvasElement | null>, onScan?: (code: string) => void) => {
     const detectedBarcodesRef = useRef<DetectedBarcodes>(new Map());
 
     const onDraw = () => {
-        if (!(canvasRef.current && context)) {
+        if (!canvasRef.current) {
             return Promise.resolve(undefined);
         }
-        return createImageBitmap(context?.canvas ?? new Image(1,1)).then((bitmap: ImageBitmap) => {
+        return createImageBitmap(canvasRef.current).then((bitmap: ImageBitmap) => {
             const detectedBarcodes = detectedBarcodesRef.current;
             return getBarcodeDetector(barcodeDetectorOptions).then(() => {
                 return barcodeDetector?.detect(bitmap).then((barcodes: DetectedBarcode[]) => {
-                    // console.log(JSON.stringify(barcodes));
-                    // console.log(detectedBarcodes.size);
                     if (
                         barcodes.length > 0 && barcodes.filter((code: DetectedBarcode) => !detectedBarcodes.has(code.rawValue)).length > 0
                     ) {
@@ -47,6 +47,7 @@ export const useScanCanvas = (canvasRef: MutableRefObject<HTMLCanvasElement | nu
                                 return;
                             }
                             detectedBarcodes.set(barcode.rawValue, bitmap);
+                            onScan?.(barcode.rawValue);
                         });
                     }
                 });

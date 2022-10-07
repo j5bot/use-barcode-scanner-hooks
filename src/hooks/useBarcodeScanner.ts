@@ -1,9 +1,23 @@
-import { use2DContext, useScanCanvas, useVideoCanvas, useWebcam } from './barcode';
+import {
+    DeviceChoiceOptions,
+    use2DContext,
+    useScanCanvas,
+    useVideoCanvas,
+    useWebcam
+} from './barcode';
 
-export const useBarcodeScanner = (zoom: number = 1) => {
-    const { webcamVideoRef, hasPermission } = useWebcam();
+export type UseBarcodeScannerOptions = {
+    zoom?: number;
+    onScan: (barcode: string) => void;
+    onDevices?: (deviceList: MediaDeviceInfo[]) => void;
+    deviceChoiceOptions?: DeviceChoiceOptions;
+};
+
+export const useBarcodeScanner = (options: UseBarcodeScannerOptions) => {
+    const { zoom = 1, deviceChoiceOptions, onScan, onDevices } = options;
+    const { webcamVideoRef, hasPermission } = useWebcam(deviceChoiceOptions, onDevices);
     const { canvasRef, context } = use2DContext();
-    const { onDraw, detectedBarcodesRef } = useScanCanvas(canvasRef, context);
+    const { onDraw, detectedBarcodesRef } = useScanCanvas(canvasRef, onScan);
 
     useVideoCanvas({
         onDraw,

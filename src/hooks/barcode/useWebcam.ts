@@ -8,10 +8,15 @@ const defaultDeviceChoiceOptions: DeviceChoiceOptions = {
     facingMode: 'environment',
 };
 
-export const useWebcam = (deviceChoiceOptions?: DeviceChoiceOptions) => {
+export const useWebcam = (
+    deviceChoiceOptions?: DeviceChoiceOptions,
+    onDevices?: (deviceList: MediaDeviceInfo[]) => void
+) => {
     const webcamVideoRef = useRef<HTMLVideoElement | null>(null);
     const { hasPermission } = useHasCameraPermission();
     const { deviceList } = useGetDeviceList(hasPermission);
+    onDevices?.(deviceList);
+
     const { stream } = useDeviceStream(deviceList, deviceChoiceOptions ?? defaultDeviceChoiceOptions);
     const { isStreaming } = useStreamToVideoElement(webcamVideoRef.current, stream);
 

@@ -1,4 +1,5 @@
 import { ComponentStory } from '@storybook/react';
+import { useState } from 'react';
 import { useBarcodeScanner } from '../../../hooks';
 
 import './Scan.css';
@@ -20,7 +21,13 @@ const ScannerStories = (props: ScannerStoriesProps) => {
         zoom = 1,
     } = props;
 
-    const { webcamVideoRef, canvasRef, hasPermission } = useBarcodeScanner(zoom);
+    const [codes, setCodes] = useState<string[]>([]);
+
+    const onScan = (code: string) => {
+        setCodes(codes.concat(code));
+    };
+
+    const { webcamVideoRef, canvasRef, hasPermission } = useBarcodeScanner({ zoom, onScan });
     
     return <div>
         {hasPermission ? <div className={'scan-canvas-container'}>
@@ -30,7 +37,11 @@ const ScannerStories = (props: ScannerStoriesProps) => {
             <div className={'scan-canvas'}>
              <canvas ref={canvasRef} width={canvasWidth} height={canvasHeight} />
             </div>
-         </div> : null}
+            <div className={'scanned-codes'}>
+                <textarea rows={10} cols={100} readOnly={true} value={codes.join('\n')} />
+            </div>
+         </div>
+         : null}
     </div>;
 };
 
