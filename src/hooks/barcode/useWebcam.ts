@@ -8,17 +8,22 @@ const defaultDeviceChoiceOptions: DeviceChoiceOptions = {
     facingMode: 'environment',
 };
 
-export const useWebcam = (
-    deviceChoiceOptions?: DeviceChoiceOptions,
+export type UseWebcamOptions = {
+    deviceChoiceOptions?: DeviceChoiceOptions;
     onDevices?: (deviceList: MediaDeviceInfo[]) => void
-) => {
+    shouldPlay?: boolean;
+}
+
+export const useWebcam = (options: UseWebcamOptions = {}) => {
+    const { deviceChoiceOptions, onDevices, shouldPlay } = options;
+
     const webcamVideoRef = useRef<HTMLVideoElement | null>(null);
     const { hasPermission } = useHasCameraPermission();
     const { deviceList } = useGetDeviceList(hasPermission);
     onDevices?.(deviceList);
 
     const { stream } = useDeviceStream(deviceList, deviceChoiceOptions ?? defaultDeviceChoiceOptions);
-    const { isStreaming } = useStreamToVideoElement(webcamVideoRef.current, stream);
+    const { isStreaming } = useStreamToVideoElement(webcamVideoRef.current, stream, shouldPlay);
 
     return {
         webcamVideoRef,
@@ -29,7 +34,11 @@ export const useWebcam = (
     };
 };
 
-const useStreamToVideoElement = (videoElement: HTMLVideoElement | null, stream: MediaStream | undefined) => {
+const useStreamToVideoElement = (
+    videoElement: HTMLVideoElement | null,
+    stream: MediaStream | undefined,
+    shouldPlay?: boolean,
+) => {
     const [isStreaming, setIsStreaming] = useState<boolean>(false);
 
     useEffect(() => {
@@ -37,19 +46,21 @@ const useStreamToVideoElement = (videoElement: HTMLVideoElement | null, stream: 
 
         if (!isStreaming && videoElement && stream) {
             videoElement.srcObject = stream;
-            videoElement.play()
-                .then(() => {
-                    if (!active) {
-                        return;
-                    }
-                    setIsStreaming(true);
-                })
-                .catch(() => {
-                    if (!active) {
-                        return;
-                    }
-                    setIsStreaming(false);
-                });
+            if (shouldPlay) {
+                videoElement.play()
+                    .then(() => {
+                        if (!active) {
+                            return;
+                        }
+                        setIsStreaming(true);
+                    })
+                    .catch(() => {
+                        if (!active) {
+                            return;
+                        }
+                        setIsStreaming(false);
+                    });
+            }
         }
 
         return () => { active = false; };

@@ -1,8 +1,9 @@
+import React from 'react';
 import { ComponentStory } from '@storybook/react';
 import { useWebcam } from '../../../hooks';
 
 const WebcamStories = (props: any) => {
-    const { webcamVideoRef, hasPermission } = useWebcam();
+    const { webcamVideoRef, hasPermission } = useWebcam({ shouldPlay: true });
 
     return <div>
         {hasPermission ?

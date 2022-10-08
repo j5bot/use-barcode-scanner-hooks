@@ -1,15 +1,17 @@
+import React from 'react';
 import { ComponentStory } from '@storybook/react';
-import { use2DContext, useVideoCanvas, useWebcam } from '../../../hooks';
+import { useRef } from 'react';
+import { useVideoCanvas, useWebcam } from '../../../hooks';
 
 const VideoCanvasStories = () => {
     const { webcamVideoRef, hasPermission } = useWebcam();
-    const { canvasRef, context } = use2DContext();
+    const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
     useVideoCanvas({
         webcamVideoRef,
         canvasRef,
         hasPermission,
-        context,
+        shouldPlay: true,
     });
 
     return <div>

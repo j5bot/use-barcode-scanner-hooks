@@ -1,6 +1,5 @@
 import {
     DeviceChoiceOptions,
-    use2DContext,
     useScanCanvas,
     useVideoCanvas,
     useWebcam
@@ -15,16 +14,15 @@ export type UseBarcodeScannerOptions = {
 
 export const useBarcodeScanner = (options: UseBarcodeScannerOptions) => {
     const { zoom = 1, deviceChoiceOptions, onScan, onDevices } = options;
-    const { webcamVideoRef, hasPermission } = useWebcam(deviceChoiceOptions, onDevices);
-    const { canvasRef, context } = use2DContext();
-    const { onDraw, detectedBarcodesRef } = useScanCanvas(canvasRef, onScan);
+    const { webcamVideoRef, hasPermission } = useWebcam({ deviceChoiceOptions, onDevices });
+    const { onDraw, canvasRef, detectedBarcodesRef } = useScanCanvas(onScan);
 
     useVideoCanvas({
         onDraw,
         webcamVideoRef,
         canvasRef,
         hasPermission,
-        context,
+        shouldPlay: true,
         zoom,
     });
 

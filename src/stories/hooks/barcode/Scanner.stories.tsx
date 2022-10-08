@@ -1,5 +1,6 @@
+import React, { useState } from 'react';
 import { ComponentStory } from '@storybook/react';
-import { use2DContext, useScanCanvas, useVideoCanvas, useWebcam } from '../../../hooks';
+import { useScanCanvas, useVideoCanvas, useWebcam } from '../../../hooks';
 
 import './Scan.css';
 
@@ -20,16 +21,20 @@ const ScannerStories = (props: ScannerStoriesProps) => {
         zoom = 1,
     } = props;
 
-    const { webcamVideoRef, hasPermission } = useWebcam();
-    const { canvasRef, context } = use2DContext();
-    const { onDraw } = useScanCanvas(canvasRef);
+    const [codes, setCodes] = useState<string[]>([]);
+
+    const onScan = (code: string) => {
+        setCodes(codes.concat(code));
+    };
+
+    const { webcamVideoRef, hasPermission } = useWebcam({ shouldPlay: true });
+    const { onDraw, canvasRef } = useScanCanvas(onScan);
 
     useVideoCanvas({
         onDraw,
         webcamVideoRef,
         canvasRef,
         hasPermission,
-        context,
         zoom,
     });
 
@@ -41,16 +46,19 @@ const ScannerStories = (props: ScannerStoriesProps) => {
             <div className={'scan-canvas'}>
              <canvas ref={canvasRef} width={canvasWidth} height={canvasHeight} />
             </div>
-         </div> : null}
+            <div className={'scanned-codes'}>
+                <textarea rows={10} cols={100} readOnly={true} value={codes.join('\n')} />
+            </div>
+        </div> : null}
     </div>;
 };
 
 export default {
     component: ScannerStories,
-    title: 'Scanner/Scanner',
+    title: 'Scanner/Separate Hooks',
 };
 
 const Template: ComponentStory<typeof ScannerStories> = (args: any) => <ScannerStories {...args}/>
 
-export const Scanner = Template.bind({});
-Scanner.args = { zoom: 2, canvasWidth: 320, canvasHeight: 240, videoWidth: 640, videoHeight: 480 };
+export const SeparateHooks = Template.bind({});
+SeparateHooks.args = { zoom: 2, canvasWidth: 320, canvasHeight: 240, videoWidth: 640, videoHeight: 480 };

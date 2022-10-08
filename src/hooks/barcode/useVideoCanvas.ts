@@ -4,23 +4,37 @@ type DrawImageBounds = [number, number, number, number, number, number, number, 
 
 export type UseVideoCanvasOptions = {
     onDraw?: () => void;
+    onPlay?: () => void;
     webcamVideoRef: MutableRefObject<HTMLVideoElement | null>;
     canvasRef: MutableRefObject<HTMLCanvasElement | null>;
     hasPermission?: boolean;
-    context: CanvasRenderingContext2D | null | undefined;
+    shouldPlay?: boolean;
+    timeoutDelay?: number;
     zoom?: number;
 }
+
+const playWithRetry = (videoElement: HTMLVideoElement): Promise<any> => {
+    return videoElement.play().catch((error) => {
+        console.log(error);
+        return new Promise((resolve) => {
+            setTimeout(() => resolve(playWithRetry(videoElement)), 100);
+        });
+    });
+};
 
 export const useVideoCanvas = (options: UseVideoCanvasOptions) => {
     const {
         onDraw,
+        onPlay,
         webcamVideoRef,
         canvasRef,
-        context,
         hasPermission = true,
+        shouldPlay,
+        timeoutDelay = 17,
         zoom = 1,
     } = options;
 
+    const [context, setContext] = useState<CanvasRenderingContext2D | null>();
     const [hasListener, setHasListener] = useState<boolean>(false);
 
     const bounds: DrawImageBounds = useMemo(() => {
@@ -46,7 +60,7 @@ export const useVideoCanvas = (options: UseVideoCanvasOptions) => {
 
     }, [canvasRef.current, webcamVideoRef.current, zoom]);
 
-    const streamToCanvas = useCallback(() => {
+    const streamToCanvas = useMemo(() => () => {
         const videoElement = webcamVideoRef.current;
 
         if (!(context && videoElement)) {
@@ -57,19 +71,26 @@ export const useVideoCanvas = (options: UseVideoCanvasOptions) => {
         context.drawImage(videoElement, ...bounds);
         onDraw?.();
 
-        window.setTimeout(streamToCanvas, 17);
+        window.setTimeout(streamToCanvas, timeoutDelay);
 
     }, [context]);
 
     useEffect(() => {
-        if (hasPermission && context) {
+
+        if (!context && canvasRef.current) {
+            setContext(canvasRef.current?.getContext('2d'));
+        }
+
+        if (hasPermission && context && webcamVideoRef.current) {
             if (!hasListener) {
-                webcamVideoRef.current?.addEventListener('play', (event) => {
+                webcamVideoRef.current.addEventListener('play', (event) => {
                     streamToCanvas();
                 });
+                if (shouldPlay) {
+                    playWithRetry(webcamVideoRef.current).then(onPlay);
+                }
                 setHasListener(true);
             }
         }
-    }, [hasPermission, context]);
-
+    }, [webcamVideoRef.current, hasPermission, context]);
 };

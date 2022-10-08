@@ -1,4 +1,4 @@
-import { MutableRefObject, useRef } from 'react';
+import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { BarcodeDetectorOptions, BarcodeFormat, DetectedBarcode } from '../../types/BarcodeDetector';
 
 const { BarcodeDetectorPolyfill } = require('@undecaf/barcode-detector-polyfill');
@@ -28,7 +28,8 @@ const getBarcodeDetector = async (options: BarcodeDetectorOptions) => {
     return Promise.resolve(barcodeDetector);
 };
 
-export const useScanCanvas = (canvasRef: MutableRefObject<HTMLCanvasElement | null>, onScan?: (code: string) => void) => {
+export const useScanCanvas = (onScan?: (code: string) => void) => {
+    const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const detectedBarcodesRef = useRef<DetectedBarcodes>(new Map());
 
     const onDraw = () => {
@@ -55,5 +56,5 @@ export const useScanCanvas = (canvasRef: MutableRefObject<HTMLCanvasElement | nu
         });
     }
 
-    return { onDraw, detectedBarcodesRef };
+    return { onDraw, canvasRef, detectedBarcodesRef };
 };

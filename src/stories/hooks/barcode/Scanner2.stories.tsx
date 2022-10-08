@@ -1,3 +1,4 @@
+import React from 'react';
 import { ComponentStory } from '@storybook/react';
 import { useState } from 'react';
 import { useBarcodeScanner } from '../../../hooks';
@@ -52,5 +53,5 @@ export default {
 
 const Template: ComponentStory<typeof ScannerStories> = (args: any) => <ScannerStories {...args}/>
 
-export const Scanner = Template.bind({});
-Scanner.args = { zoom: 2, canvasWidth: 320, canvasHeight: 240, videoWidth: 640, videoHeight: 480 };
+export const CombinedHook = Template.bind({});
+CombinedHook.args = { zoom: 2, canvasWidth: 320, canvasHeight: 240, videoWidth: 640, videoHeight: 480 };
