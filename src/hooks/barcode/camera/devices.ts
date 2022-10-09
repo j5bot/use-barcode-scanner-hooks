@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export const useGetDeviceList = (hasPermission: boolean): { deviceList: MediaDeviceInfo[] } => {
+export const useGetDeviceList = (hasPermission: boolean, onDevices?: (deviceList: MediaDeviceInfo[]) => void): { deviceList: MediaDeviceInfo[] } => {
     const [deviceList, setDeviceList] = useState<MediaDeviceInfo[]>([]);
 
     useEffect(() => {
@@ -12,6 +12,7 @@ export const useGetDeviceList = (hasPermission: boolean): { deviceList: MediaDev
                     return;
                 }
                 setDeviceList(deviceList);
+                onDevices?.(deviceList);
             });
         }
 

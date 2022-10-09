@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { removeStreamTracks } from './stream';
+import { getUserMedia, removeStreamTracks } from './stream';
 
 export const useHasCameraPermission = () => {
     const [hasPermission, setHasPermission] = useState<boolean>(false);
@@ -15,16 +15,16 @@ export const useHasCameraPermission = () => {
         });
 
         return () => { active = false; };
-    }, [hasPermission]);
+    }, [setHasPermission]);
 
     return { hasPermission };
 };
 
-const canGetUserMedia = (): Promise<boolean> => {
-    return navigator.mediaDevices.getUserMedia({
+export const canGetUserMedia = (): Promise<boolean> => {
+    return getUserMedia({
             video: true,
             audio: false,
-        })
+        }, 'canGetUserMedia')
         .then((stream: MediaStream) => {
             removeStreamTracks(stream);
             return true;

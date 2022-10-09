@@ -34,6 +34,6 @@ interface BarcodeDetectorClass {
 }
 
 export type BarcodeDetector = BarcodeDetectorClass & {
-    getSupportedFormats: () => BarcodeFormat[];
+    getSupportedFormats: () => Promise<BarcodeFormat[]>;
     detect: (source: ImageBitmapSource) => Promise<DetectedBarcode[]>;
 };

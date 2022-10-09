@@ -19,10 +19,9 @@ export const useWebcam = (options: UseWebcamOptions = {}) => {
 
     const webcamVideoRef = useRef<HTMLVideoElement | null>(null);
     const { hasPermission } = useHasCameraPermission();
-    const { deviceList } = useGetDeviceList(hasPermission);
-    onDevices?.(deviceList);
+    const { deviceList } = useGetDeviceList(hasPermission, onDevices);
 
-    const { stream } = useDeviceStream(deviceList, deviceChoiceOptions ?? defaultDeviceChoiceOptions);
+    const { stream } = useDeviceStream(hasPermission, deviceList, deviceChoiceOptions ?? defaultDeviceChoiceOptions);
     const { isStreaming } = useStreamToVideoElement(webcamVideoRef.current, stream, shouldPlay);
 
     return {

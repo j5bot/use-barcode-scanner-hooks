@@ -6,35 +6,48 @@ export type DeviceChoiceOptions = {
     facingMode?: 'user' | 'environment';
 };
 
-export const useDeviceStream = (deviceList: MediaDeviceInfo[], deviceChoiceOptions: DeviceChoiceOptions) => {
+export const useDeviceStream = (hasPermission: boolean, deviceList: MediaDeviceInfo[], deviceChoiceOptions: DeviceChoiceOptions) => {
     const [stream, setStream] = useState<MediaStream>();
 
-    const constraints = useMemo(() => getMediaConstraintsForDeviceChoiceOptions(deviceList, deviceChoiceOptions), [deviceList, deviceChoiceOptions]);
+    const constraints = useMemo(
+        () => getMediaConstraintsForDeviceChoiceOptions(deviceList, deviceChoiceOptions),
+        [deviceList, deviceChoiceOptions]
+    );
 
     useEffect(() => {
         let active = true;
 
-        getDeviceStream(constraints).then((stream: MediaStream) => {
-            if (!active) {
-                return;
-            }
-            setStream(stream);
-        });
+        if (hasPermission && constraints) {
+            getUserMedia(constraints, 'useDeviceStream #1').then((stream: MediaStream) => {
+                if (!active) {
+                    removeStreamTracks(stream);
+                    return;
+                }
+                setStream(stream);
+            }).catch((error) => {
+                console.log(`requested device not available`, error);
+                return getUserMedia({ video: { advanced: [{ facingMode: 'environment' }] } }, 'useDeviceStream #2').then(setStream)
+                    .catch((error) => {
+                        console.log('no environment-facing camera available', error);
+                        return getUserMedia({ video: true }, 'useDeviceStream #3').then(setStream);
+                    });
+            });
+        }
 
         return () => { active = false };
-    }, [constraints]);
+    }, [hasPermission, constraints]);
 
     return { stream };
-};
-
-const getDeviceStream = (constraints: MediaStreamConstraints): Promise<MediaStream> => {
-    return navigator.mediaDevices.getUserMedia(constraints);
 };
 
 const getMediaConstraintsForDeviceChoiceOptions = (deviceList: MediaDeviceInfo[], deviceChoiceOptions: DeviceChoiceOptions) => {
     const constraints: MediaStreamConstraints = { audio: false, video: true };
 
-    if (deviceList.length <= 1) {
+    if (deviceList.length === 0) {
+        return undefined;
+    }
+
+    if (deviceList.length === 1) {
         return constraints;
     }
 
@@ -69,6 +82,22 @@ const getMediaConstraintsForDeviceChoiceOptions = (deviceList: MediaDeviceInfo[]
     }
 
     return constraints;
+};
+
+/* uncomment all the things here if you're having trouble getting media */
+// let useMediaAttempts = 0;
+// let useMediaSuccesses = 0;
+
+export const getUserMedia = (constraints: MediaStreamConstraints, context: string = '') => {
+    // const attempts = ++useMediaAttempts;
+    // console.log(`use media attempts: ${attempts} (${context})`, constraints);
+    // const successes = useMediaSuccesses;
+    return navigator.mediaDevices.getUserMedia(constraints)
+        .then((stream: MediaStream) => {
+            // console.log(`use media success: ${successes + 1}/${attempts} (${context})`, constraints);
+            // useMediaSuccesses++;
+            return stream;
+        });
 };
 
 export const removeStreamTracks = (stream: MediaStream): void => {

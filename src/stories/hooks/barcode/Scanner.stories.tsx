@@ -28,11 +28,12 @@ const ScannerStories = (props: ScannerStoriesProps) => {
     };
 
     const { webcamVideoRef, hasPermission } = useWebcam({ shouldPlay: true });
-    const { onDraw, canvasRef } = useScanCanvas(onScan);
+    const { onDraw, canDetect, canvasRef } = useScanCanvas(onScan);
 
     useVideoCanvas({
         onDraw,
         webcamVideoRef,
+        shouldDraw: canDetect,
         canvasRef,
         hasPermission,
         zoom,

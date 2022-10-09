@@ -6,6 +6,7 @@ export type UseVideoCanvasOptions = {
     onDraw?: () => void;
     onPlay?: () => void;
     webcamVideoRef: MutableRefObject<HTMLVideoElement | null>;
+    shouldDraw?: boolean;
     canvasRef: MutableRefObject<HTMLCanvasElement | null>;
     hasPermission?: boolean;
     shouldPlay?: boolean;
@@ -27,6 +28,7 @@ export const useVideoCanvas = (options: UseVideoCanvasOptions) => {
         onDraw,
         onPlay,
         webcamVideoRef,
+        shouldDraw = true,
         canvasRef,
         hasPermission = true,
         shouldPlay,
@@ -69,11 +71,13 @@ export const useVideoCanvas = (options: UseVideoCanvasOptions) => {
         }
 
         context.drawImage(videoElement, ...bounds);
-        onDraw?.();
+        if (shouldDraw) {
+            onDraw?.();
+        }
 
         window.setTimeout(streamToCanvas, timeoutDelay);
 
-    }, [context]);
+    }, [shouldDraw, context]);
 
     useEffect(() => {
 
