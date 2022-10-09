@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react';
 import { BarcodeDetector, BarcodeDetectorOptions, BarcodeFormat, DetectedBarcode } from '../../types';
-import { BarcodeDetectorPolyfill } from '@undecaf/barcode-detector-polyfill';
-
+const { BarcodeDetectorPolyfill } = require('@undecaf/barcode-detector-polyfill');
 
 declare let window: Window & typeof globalThis & {
     BarcodeDetector: BarcodeDetector;
