@@ -28,10 +28,10 @@ const ScannerStories = (props: ScannerStoriesProps) => {
         setCodes(codes.concat(code));
     };
 
-    const { webcamVideoRef, canvasRef, hasPermission } = useBarcodeScanner({ zoom, onScan });
+    const { webcamVideoRef, canvasRef, hasPermission, stream } = useBarcodeScanner({ zoom, onScan });
     
     return <div>
-        {hasPermission ? <div className={'scan-canvas-container'}>
+        {hasPermission && stream ? <div className={'scan-canvas-container'}>
             <div className={'scan-canvas-video'}>
              <video ref={webcamVideoRef} width={videoWidth} height={videoHeight} />
             </div>

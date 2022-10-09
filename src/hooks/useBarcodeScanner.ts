@@ -21,7 +21,7 @@ export const useBarcodeScanner = (options: UseBarcodeScannerOptions) => {
         onDevices,
         shouldPlay = true,
     } = options;
-    const { webcamVideoRef, hasPermission } = useWebcam({ deviceChoiceOptions, onDevices });
+    const { webcamVideoRef, hasPermission, isStreaming, stream } = useWebcam({ deviceChoiceOptions, onDevices });
     const { onDraw, canDetect, canvasRef, detectedBarcodesRef } = useScanCanvas(onScan);
 
     useVideoCanvas({
@@ -37,7 +37,9 @@ export const useBarcodeScanner = (options: UseBarcodeScannerOptions) => {
     return {
         webcamVideoRef,
         canvasRef,
+        stream,
         detectedBarcodes: detectedBarcodesRef.current,
         hasPermission,
+        isStreaming,
     };
 };

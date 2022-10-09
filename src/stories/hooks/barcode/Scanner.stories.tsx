@@ -27,7 +27,7 @@ const ScannerStories = (props: ScannerStoriesProps) => {
         setCodes(codes.concat(code));
     };
 
-    const { webcamVideoRef, hasPermission } = useWebcam({ shouldPlay: true });
+    const { webcamVideoRef, hasPermission, stream } = useWebcam({ shouldPlay: true });
     const { onDraw, canDetect, canvasRef } = useScanCanvas(onScan);
 
     useVideoCanvas({
@@ -40,7 +40,7 @@ const ScannerStories = (props: ScannerStoriesProps) => {
     });
 
     return <div>
-        {hasPermission ? <div className={'scan-canvas-container'}>
+        {hasPermission && stream ? <div className={'scan-canvas-container'}>
             <div className={'scan-canvas-video'}>
              <video ref={webcamVideoRef} width={videoWidth} height={videoHeight} />
             </div>
