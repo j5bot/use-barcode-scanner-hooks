@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ComponentStory } from '@storybook/react';
-import { useScanCanvas, useVideoCanvas, useWebcam } from '../../../hooks';
+import { useState } from 'react';
+import { useBarcodeScanner } from '../../../hooks';
 
-import './Scan.css';
+import './CombinedHook.css';
 
-type ScannerStoriesProps = {
+type CombinedHookStoriesProps = {
     canvasWidth?: number;
     canvasHeight?: number;
     videoWidth?: number;
@@ -12,7 +13,7 @@ type ScannerStoriesProps = {
     zoom?: number;
 }
 
-const ScannerStories = (props: ScannerStoriesProps) => {
+const CombinedHookStories = (props: CombinedHookStoriesProps) => {
     const {
         canvasWidth = 320,
         canvasHeight = 240,
@@ -27,20 +28,10 @@ const ScannerStories = (props: ScannerStoriesProps) => {
         setCodes(codes.concat(code));
     };
 
-    const { webcamVideoRef, hasPermission, stream } = useWebcam({ shouldPlay: true });
-    const { onDraw, canDetect, canvasRef } = useScanCanvas(onScan);
-
-    useVideoCanvas({
-        onDraw,
-        webcamVideoRef,
-        shouldDraw: canDetect,
-        canvasRef,
-        hasPermission,
-        zoom,
-    });
-
+    const { webcamVideoRef, canvasRef, hasPermission } = useBarcodeScanner({ zoom, onScan });
+    
     return <div>
-        {hasPermission && stream ? <div className={'scan-canvas-container'}>
+        {hasPermission ? <div className={'scan-canvas-container'}>
             <div className={'scan-canvas-video'}>
              <video ref={webcamVideoRef} width={videoWidth} height={videoHeight} />
             </div>
@@ -50,16 +41,17 @@ const ScannerStories = (props: ScannerStoriesProps) => {
             <div className={'scanned-codes'}>
                 <textarea rows={10} cols={100} readOnly={true} value={codes.join('\n')} />
             </div>
-        </div> : null}
+         </div>
+         : null}
     </div>;
 };
 
 export default {
-    component: ScannerStories,
-    title: 'Scanner/Separate Hooks',
+    component: CombinedHookStories,
+    title: 'Scanner/Combined Hook',
 };
 
-const Template: ComponentStory<typeof ScannerStories> = (args: any) => <ScannerStories {...args}/>
+const Template: ComponentStory<typeof CombinedHookStories> = (args: any) => <CombinedHookStories {...args}/>
 
-export const SeparateHooks = Template.bind({});
-SeparateHooks.args = { zoom: 2, canvasWidth: 320, canvasHeight: 240, videoWidth: 640, videoHeight: 480 };
+export const CombinedHook = Template.bind({});
+CombinedHook.args = { zoom: 2, canvasWidth: 320, canvasHeight: 240, videoWidth: 640, videoHeight: 480 };

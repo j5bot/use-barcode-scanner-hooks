@@ -1,0 +1,91 @@
+.webcam-scanner-preview-box {
+    --video-border: solid 1px #ccc;
+    --scanline: solid 3px #ff000099;
+
+    --assume-video-width: 640px;
+    --assume-video-height: 480px;
+    --assume-zoom: 2;
+
+    --video-crop-width: 640px;
+    --video-crop-height: 300px;
+
+    --video-blur: 3px;
+
+    --video-element-width: calc(
+            var(--assume-video-width) - var(--video-blur) * 2
+    );
+    --video-element-height: calc(
+            var(--assume-video-height) - var(--video-blur) * 2
+    );
+
+    --video-element-top: calc((var(--video-crop-height) - var(--video-element-height)) / 2 - var(--video-blur));
+    --video-element-left: calc((var(--video-crop-width) - var(--video-element-width)) / 2 - var(--video-blur));
+
+    --canvas-element-width: calc(var(--assume-video-width) / var(--assume-zoom));
+    --canvas-element-height: calc(var(--assume-video-height) / var(--assume-zoom));
+    --canvas-element-left: calc((var(--video-crop-width) - var(--canvas-element-width)) / var(--assume-zoom) - var(--video-blur));
+    --canvas-element-top: calc((var(--video-crop-height) - var(--canvas-element-height)) / var(--assume-zoom) - var(--video-blur));
+}
+
+.webcam-scanner-preview-box {
+    display: flex;
+    justify-content: center;
+}
+
+.webcam-scanner-preview {
+    border: var(--video-border);
+    position: relative;
+    height: var(--video-crop-height);
+    width: var(--video-crop-width);
+    overflow: hidden;
+}
+.webcam-scanner-preview > canvas {
+    position: absolute;
+    left: var(--canvas-element-left);
+    top: var(--canvas-element-top);
+    width: var(--canvas-element-width);
+    height: var(--canvas-element-height);
+}
+/* for confirming that the zoom center is correct */
+/*.webcam-scanner-preview {*/
+/*    overflow: visible;*/
+/*}*/
+/*.webcam-scanner-preview > canvas {*/
+/*    left: var(--assume-video-width);*/
+/*}*/
+/*.webcam-scanner-preview > .match-canvas {*/
+/*    border: solid 1px white;*/
+/*    position: absolute;*/
+/*    width: 160px;*/
+/*    height: 120px;*/
+/*    left: calc((640px / 2 - 320px / 4) - 3px);*/
+/*    top: calc((480px / 2 - 240px / 4) - 3px);*/
+/*}*/
+
+.webcam-scanner-preview > video {
+    position: absolute;
+    top: var(--video-element-top);
+    left: var(--video-element-left);
+    filter: blur(var(--video-blur));
+}
+
+.scanline {
+    position: absolute;
+    left: var(--canvas-element-left);
+    top: var(--canvas-element-top);
+    width: var(--canvas-element-width);
+    height: 1px;
+    overflow: hidden;
+
+    border-top: var(--scanline);
+
+    animation-name: scanline;
+    animation-iteration-count: infinite;
+    animation-duration: 1.5s;
+    animation-timing-function: linear;
+}
+
+@keyframes scanline {
+    from { top: var(--canvas-element-top); }
+    to { top: calc(var(--canvas-element-top) + var(--canvas-element-height)); }
+}

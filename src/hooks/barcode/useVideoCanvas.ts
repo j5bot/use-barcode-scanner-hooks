@@ -47,13 +47,16 @@ export const useVideoCanvas = (options: UseVideoCanvasOptions) => {
             return [0, 0, 0, 0, 0, 0, 0, 0];
         }
 
+        const originX = (video.width / 2) - (canvas.width / (2 * zoom));
+        const originY = (video.height / 2) - (canvas.height / (2 * zoom));
+
         return [
             // gets center of the video image
-            (video.width - canvas.width) / 2,
-            (video.height - canvas.height) / 2,
+            originX,
+            originY,
             // zooms center of video image
-            canvas.width / zoom,
-            canvas.height / zoom,
+            (canvas.width / zoom),
+            (canvas.height / zoom),
             0,
             0,
             canvas.width,

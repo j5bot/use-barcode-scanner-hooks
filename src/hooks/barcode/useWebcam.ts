@@ -1,7 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
-import { useGetDeviceList } from './camera/devices';
-import { useHasCameraPermission } from './camera/permission';
-import { DeviceChoiceOptions, useDeviceStream } from './camera/stream';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import {
+    DeviceChoiceOptions,
+    useDeviceStream,
+    useGetDeviceList,
+    useHasCameraPermission
+} from './camera';
 
 const defaultDeviceChoiceOptions: DeviceChoiceOptions = {
     matcher: /back/i,
@@ -21,7 +24,14 @@ export const useWebcam = (options: UseWebcamOptions = {}) => {
     const { hasPermission } = useHasCameraPermission();
     const { deviceList } = useGetDeviceList(hasPermission, onDevices);
 
-    const { stream } = useDeviceStream(hasPermission, deviceList, deviceChoiceOptions ?? defaultDeviceChoiceOptions);
+    const combinedDeviceChoiceOptions = useMemo(() => {
+        return Object.assign(
+            { width: webcamVideoRef.current?.width ?? 640, height: webcamVideoRef.current?.height ?? 480 },
+            deviceChoiceOptions ?? defaultDeviceChoiceOptions,
+            );
+    }, [webcamVideoRef.current, deviceChoiceOptions]);
+
+    const { stream } = useDeviceStream(hasPermission, deviceList, combinedDeviceChoiceOptions);
     const { isStreaming } = useStreamToVideoElement(webcamVideoRef.current, stream, shouldPlay);
 
     return {

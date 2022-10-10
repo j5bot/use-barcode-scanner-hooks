@@ -1,8 +1,10 @@
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
+import autoprefixer from 'autoprefixer';
 import excludeDependenciesFromBundle from 'rollup-plugin-exclude-dependencies-from-bundle';
 import dts from "rollup-plugin-dts";
+import postcss from "rollup-plugin-postcss";
 
 const packageJson = require("./package.json");
 
@@ -26,12 +28,18 @@ const makeDefaultConfig = (hooksOrComponents) => {
             plugins: [
                 resolve(),
                 commonjs(),
-                typescript({ tsconfig: "./tsconfig.json" }),
+                typescript({ tsconfig: `./tsconfig.${hooksOrComponents}.json` }),
+                postcss({
+                    plugins: [autoprefixer()],
+                    sourceMap: true,
+                    extract: true,
+                    minimize: true,
+                }),
                 excludeDependenciesFromBundle({ peerDependencies: true }),
             ],
         },
         {
-            input: `dist/${hooksOrComponents}/esm/types/index.d.ts`,
+            input: `dist/${hooksOrComponents}/esm/index.d.ts`,
             output: [{ file: `dist/${hooksOrComponents}/index.d.ts`, format: "esm" }],
             external: [ 'react', 'react-dom' ],
             plugins: [

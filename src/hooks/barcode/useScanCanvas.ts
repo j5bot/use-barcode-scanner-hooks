@@ -1,6 +1,5 @@
 import { useRef, useState } from 'react';
-import { BarcodeDetector, BarcodeDetectorOptions, BarcodeFormat, DetectedBarcode } from '../../types';
-const { BarcodeDetectorPolyfill } = require('@undecaf/barcode-detector-polyfill');
+import { BarcodeDetector, BarcodeDetectorOptions, BarcodeFormat, DetectedBarcode } from '../types';
 
 declare let window: Window & typeof globalThis & {
     BarcodeDetector: BarcodeDetector;
@@ -17,9 +16,12 @@ const getBarcodeDetector = async (options: BarcodeDetectorOptions) => {
     }
     const hasNative = 'BarcodeDetector' in window;
     if (!hasNative) {
-        window.BarcodeDetector = (
-            BarcodeDetectorPolyfill as unknown
-        ) as BarcodeDetector;
+        await import('@undecaf/barcode-detector-polyfill').then((BCD) => {
+            const { BarcodeDetectorPolyfill } = BCD;
+            window.BarcodeDetector = (
+                BarcodeDetectorPolyfill as unknown
+            ) as BarcodeDetector;
+        });
     }
     return window.BarcodeDetector.getSupportedFormats().then((formats: BarcodeFormat[]) => {
         if (formats.length === 0) {
@@ -64,6 +66,7 @@ export const useScanCanvas = (onScan?: (code: string) => void) => {
                         });
                 });
             }).catch((error) => {
+                console.error('setting can detect to false');
                 setCanDetect(false);
             });
     };

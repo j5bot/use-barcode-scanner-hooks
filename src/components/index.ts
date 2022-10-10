@@ -1,1 +1,1 @@
-export * from './Webcam';
+export * from './BarcodeScanner';

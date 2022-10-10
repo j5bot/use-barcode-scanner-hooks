@@ -4,6 +4,8 @@ export type DeviceChoiceOptions = {
     matcher?: RegExp;
     deviceId?: string;
     facingMode?: 'user' | 'environment';
+    width?: number;
+    height?: number;
 };
 
 export const useDeviceStream = (hasPermission: boolean, deviceList: MediaDeviceInfo[], deviceChoiceOptions: DeviceChoiceOptions) => {
@@ -53,7 +55,9 @@ const getMediaConstraintsForDeviceChoiceOptions = (deviceList: MediaDeviceInfo[]
 
     let advancedConstraints: MediaTrackConstraintSet[] = [];
     let { deviceId } = deviceChoiceOptions;
-    const { matcher, facingMode } = deviceChoiceOptions;
+    const { matcher, facingMode, width, height } = deviceChoiceOptions;
+
+    constraints.video = { width, height };
 
     if (deviceId) {
         advancedConstraints.push({ deviceId });
@@ -78,7 +82,7 @@ const getMediaConstraintsForDeviceChoiceOptions = (deviceList: MediaDeviceInfo[]
     }
 
     if (advancedConstraints.length > 0) {
-        constraints.video = { advanced: advancedConstraints };
+        constraints.video = { width, height, advanced: advancedConstraints };
     }
 
     return constraints;
