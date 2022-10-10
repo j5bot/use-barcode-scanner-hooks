@@ -2,10 +2,17 @@
   "name": "use-barcode-scanner",
   "version": "0.1.0",
   "private": false,
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
+  "hooks": {
+    "main": "dist/hooks/cjs/index.js",
+    "module": "dist/hooks/esm/index.js"
+  },
+  "components": {
+    "main": "dist/components/cjs/index.js",
+    "module": "dist/components/esm/index.js"
+  },
   "files": [
-    "dist"
+    "dist/hooks",
+    "dist/components"
   ],
   "types": "dist/index.d.ts",
   "dependencies": {
@@ -38,7 +45,7 @@
   },
   "browserslist": {
     "production": [
-      ">0.2%",
+      ">1%",
       "not dead",
       "not op_mini all"
     ],
@@ -83,6 +90,7 @@
     "require-from-string": "^2.0.2",
     "rollup": "^2.79.1",
     "rollup-plugin-dts": "^4.2.2",
+    "rollup-plugin-exclude-dependencies-from-bundle": "^1.1.22",
     "typescript": "^4.4.2",
     "web-vitals": "^2.1.0",
     "webpack": "^5.74.0"
