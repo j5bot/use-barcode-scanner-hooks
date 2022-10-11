@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunk_use_barcode_scanner_hooks=globalThis.webpackChunk_use_barcode_scanner_hooks||[]).push([[745],{"./node_modules/react-dom/client.js":(__unused_webpack_module,exports,__webpack_require__)=>{var m=__webpack_require__("./node_modules/react-dom/index.js");exports.createRoot=m.createRoot,exports.hydrateRoot=m.hydrateRoot}}]);
