@@ -1,6 +1,6 @@
 {
   "name": "use-barcode-scanner",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "hooks": {
     "main": "dist/hooks/cjs/index.js",
