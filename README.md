@@ -1,1 +1,1 @@
-# use-barcode-scanner
+# @use-barcode-scanner/hooks

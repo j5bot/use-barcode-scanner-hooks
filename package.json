@@ -1,18 +1,11 @@
 {
-  "name": "use-barcode-scanner",
-  "version": "0.1.1",
+  "name": "@use-barcode-scanner/hooks",
+  "version": "0.0.1",
   "private": false,
-  "hooks": {
-    "main": "dist/hooks/cjs/index.js",
-    "module": "dist/hooks/esm/index.js"
-  },
-  "components": {
-    "main": "dist/components/cjs/index.js",
-    "module": "dist/components/esm/index.js"
-  },
+  "main": "dist/index.js",
+  "module": "dist/esm/index.js",
   "files": [
-    "dist/hooks",
-    "dist/components"
+    "dist"
   ],
   "types": "dist/index.d.ts",
   "dependencies": {
@@ -22,6 +15,9 @@
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
     "rollup": "rollup -c"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "eslintConfig": {
     "extends": [
