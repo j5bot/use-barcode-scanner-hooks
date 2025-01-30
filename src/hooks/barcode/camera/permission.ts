@@ -20,29 +20,27 @@ export const useHasCameraPermission = () => {
     return { hasPermission };
 };
 
-export const canGetUserMedia = (): Promise<boolean> => {
-    return getUserMedia({
+export const canGetUserMedia = async (): Promise<boolean> => {
+    try {
+        let stream = await getUserMedia({
             video: true,
             audio: false,
-        }, 'canGetUserMedia')
-        .then((stream: MediaStream) => {
-            removeStreamTracks(stream);
-            return true;
-        })
-        .catch(() => false);
+        }, 'canGetUserMedia');
+        removeStreamTracks(stream);
+        return true;
+    } catch (e) {
+        return false;
+    }
 };
 
-const getHasDeviceLabels = (): Promise<boolean> => {
-    return navigator.mediaDevices.enumerateDevices()
-        .then((mediaDeviceInfos: MediaDeviceInfo[]) => {
-            return mediaDeviceInfos.find((mediaDeviceInfo: MediaDeviceInfo) => {
-                return mediaDeviceInfo.deviceId?.length > 0;
-            }) !== undefined;
-        });
-};
-
-const resolveCameraPermission = (): Promise<boolean> => {
-    return getHasDeviceLabels().then((hasDeviceLabels: boolean) => {
-        return hasDeviceLabels ? Promise.resolve(true) : canGetUserMedia();
+const getHasDeviceLabels = async (): Promise<boolean> => {
+    const mediaDeviceInfos = await navigator.mediaDevices?.enumerateDevices?.();
+    return !!mediaDeviceInfos?.find((mediaDeviceInfo: MediaDeviceInfo) => {
+        return mediaDeviceInfo.deviceId?.length > 0;
     });
+};
+
+const resolveCameraPermission = async (): Promise<boolean> => {
+    let hasDeviceLabels = await getHasDeviceLabels();
+    return hasDeviceLabels ? Promise.resolve(true) : canGetUserMedia();
 }

@@ -1,6 +1,6 @@
 {
   "name": "@use-barcode-scanner/hooks",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": false,
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
@@ -12,7 +12,7 @@
     "@undecaf/barcode-detector-polyfill": "^0.9.13"
   },
   "scripts": {
-    "storybook": "start-storybook -p 6006 -s public",
+    "storybook": "start-storybook -p 6006 -s public --https --ssl-cert ./scripts/localhost.crt --ssl-key ./scripts/localhost.key",
     "build-storybook": "build-storybook -s public",
     "deploy-storybook": "yarn build-storybook; node scripts/gh-pages-deploy.js",
     "rollup": "rollup -c"

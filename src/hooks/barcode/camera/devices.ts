@@ -22,8 +22,7 @@ export const useGetDeviceList = (hasPermission: boolean, onDevices?: (deviceList
     return { deviceList };
 };
 
-const listDevices = (): Promise<MediaDeviceInfo[]> => {
-    return navigator.mediaDevices.enumerateDevices().then((devices: MediaDeviceInfo[]) =>
-        devices.filter((device) => device.kind === 'videoinput')
-    );
+const listDevices = async (): Promise<MediaDeviceInfo[]> => {
+    let devices = await navigator.mediaDevices?.enumerateDevices?.();
+    return devices?.filter((device) => device.kind === 'videoinput') ?? [];
 };

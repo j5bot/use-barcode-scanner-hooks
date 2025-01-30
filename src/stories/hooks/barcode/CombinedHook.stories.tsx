@@ -33,7 +33,7 @@ const CombinedHookStories = (props: CombinedHookStoriesProps) => {
     return <div>
         {hasPermission ? <div className={'scan-canvas-container'}>
             <div className={'scan-canvas-video'}>
-             <video ref={webcamVideoRef} width={videoWidth} height={videoHeight} />
+             <video ref={webcamVideoRef} width={videoWidth} height={videoHeight} playsInline={true} />
             </div>
             <div className={'scan-canvas'}>
              <canvas ref={canvasRef} width={canvasWidth} height={canvasHeight} />
