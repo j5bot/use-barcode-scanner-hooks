@@ -14,13 +14,15 @@ export type UseVideoCanvasOptions = {
     zoom?: number;
 }
 
-const playWithRetry = (videoElement: HTMLVideoElement): Promise<any> => {
-    return videoElement.play().catch((error) => {
+const playWithRetry = async (videoElement: HTMLVideoElement): Promise<any> => {
+    try {
+        return await videoElement.play();
+    } catch (error) {
         console.log(error);
         return new Promise((resolve) => {
             setTimeout(() => resolve(playWithRetry(videoElement)), 100);
         });
-    });
+    }
 };
 
 export const useVideoCanvas = (options: UseVideoCanvasOptions) => {
