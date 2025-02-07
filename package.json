@@ -16,7 +16,7 @@
     "build-storybook": "build-storybook -s public",
     "deploy-storybook": "yarn build-storybook; node scripts/gh-pages-deploy.js",
     "rollup": "rollup -c",
-    "prepublish": "yarn rollup"
+    "prepublish": "yarn run rollup"
   },
   "publishConfig": {
     "access": "public",
