@@ -15,8 +15,7 @@
     "storybook": "start-storybook -p 6006 -s public --https --ssl-cert ./scripts/localhost.crt --ssl-key ./scripts/localhost.key",
     "build-storybook": "build-storybook -s public",
     "deploy-storybook": "yarn build-storybook; node scripts/gh-pages-deploy.js",
-    "rollup": "rollup -c",
-    "prepublish": "yarn run rollup"
+    "rollup": "rollup -c"
   },
   "publishConfig": {
     "access": "public",
