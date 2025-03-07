@@ -7,7 +7,7 @@
       "esnext"
     ],
     "declaration": true,
-    "declarationDir": "types",
+    "declarationDir": "dist/esm",
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
