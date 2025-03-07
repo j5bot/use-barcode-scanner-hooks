@@ -1,6 +1,7 @@
 {
   "name": "use-barcode-scanner-hooks",
-  "version": "0.1.0",
+  "license": "MIT",
+  "version": "0.1.0-alpha",
   "private": false,
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
