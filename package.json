@@ -1,5 +1,6 @@
 {
-  "name": "use-barcode-scanner-hooks",
+  "name": "@j5bot/use-barcode-scanner-hooks",
+  "repository": "https://github.com/j5bot/use-barcode-scanner-hooks.git",
   "license": "MIT",
   "version": "0.1.0-alpha",
   "private": false,
@@ -14,14 +15,14 @@
     "@undecaf/barcode-detector-polyfill": "^0.9.13"
   },
   "scripts": {
-    "storybook": "start-storybook -p 6006 -s public --https --ssl-cert ./scripts/localhost.crt --ssl-key ./scripts/localhost.key",
-    "build-storybook": "build-storybook -s public",
+    "storybook": "storybook dev -p 6006 --https --ssl-cert ./scripts/localhost.crt --ssl-key ./scripts/localhost.key",
+    "build-storybook": "storybook build -s public",
     "deploy-storybook": "yarn build-storybook; node scripts/gh-pages-deploy.js",
     "rollup": "rollup -c"
   },
   "publishConfig": {
     "access": "public",
-    "@j5bot:registry": "https://npm.pkg.github.com"
+    "registry": "https://npm.pkg.github.com"
   },
   "eslintConfig": {
     "extends": [
@@ -57,19 +58,18 @@
     "@babel/plugin-syntax-flow": "^7.18.6",
     "@babel/plugin-transform-react-jsx": "^7.19.0",
     "@babel/plugin-transform-runtime": "^7.19.1",
+    "@chromatic-com/storybook": "^3",
     "@rollup/plugin-commonjs": "^28.0.3",
     "@rollup/plugin-node-resolve": "^16.0.0",
     "@rollup/plugin-typescript": "^12.1.2",
-    "@storybook/addon-actions": "^6.5.12",
-    "@storybook/addon-essentials": "^6.5.12",
-    "@storybook/addon-interactions": "^6.5.12",
-    "@storybook/addon-links": "^6.5.12",
-    "@storybook/builder-webpack5": "^6.5.12",
-    "@storybook/manager-webpack5": "^6.5.12",
-    "@storybook/node-logger": "^6.5.12",
-    "@storybook/preset-create-react-app": "^4.1.2",
-    "@storybook/react": "^6.5.12",
-    "@storybook/testing-library": "^0.0.13",
+    "@storybook/addon-essentials": "^8.6.4",
+    "@storybook/addon-interactions": "^8.6.4",
+    "@storybook/addon-links": "^8.6.4",
+    "@storybook/node-logger": "^8.6.4",
+    "@storybook/preset-create-react-app": "^8.6.4",
+    "@storybook/react": "^8.6.4",
+    "@storybook/react-webpack5": "^8.6.4",
+    "@storybook/test": "^8.6.4",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -91,6 +91,7 @@
     "rollup-plugin-dts": "^6.1.1",
     "rollup-plugin-exclude-dependencies-from-bundle": "1.1.24",
     "rollup-plugin-postcss": "^4.0.2",
+    "storybook": "^8.6.4",
     "tslib": "^2.8.1",
     "typescript": "^4.4.2",
     "typescript-plugin-css-modules": "^3.4.0",
