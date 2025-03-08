@@ -1,65 +1,86 @@
-import React, { useState } from 'react';
-import { ComponentStory } from '@storybook/react';
-import { useScanCanvas, useVideoCanvas, useWebcam } from '../../../hooks';
+import React, { useState } from "react";
+import { ComponentStory } from "@storybook/react";
+import { useScanCanvas, useVideoCanvas, useWebcam } from "../../../hooks";
 
-import './CombinedHook.css';
+import "./CombinedHook.css";
 
 type SeparateHooksProps = {
-    canvasWidth?: number;
-    canvasHeight?: number;
-    videoWidth?: number;
-    videoHeight?: number;
-    zoom?: number;
-}
+  canvasWidth?: number;
+  canvasHeight?: number;
+  videoWidth?: number;
+  videoHeight?: number;
+  zoom?: number;
+};
 
 const SeparateHooksStories = (props: SeparateHooksProps) => {
-    const {
-        canvasWidth = 320,
-        canvasHeight = 240,
-        videoWidth = 640,
-        videoHeight = 480,
-        zoom = 1,
-    } = props;
+  const {
+    canvasWidth = 320,
+    canvasHeight = 240,
+    videoWidth = 640,
+    videoHeight = 480,
+    zoom = 1,
+  } = props;
 
-    const [codes, setCodes] = useState<string[]>([]);
+  const [codes, setCodes] = useState<string[]>([]);
 
-    const onScan = (code: string) => {
-        setCodes(codes.concat(code));
-    };
+  const onScan = (code: string) => {
+    setCodes(codes.concat(code));
+  };
 
-    const { webcamVideoRef, hasPermission } = useWebcam({ shouldPlay: true });
-    const { onDraw, canDetect, canvasRef } = useScanCanvas(onScan);
+  const { webcamVideoRef, hasPermission } = useWebcam({ shouldPlay: true });
+  const { onDraw, canDetect, canvasRef } = useScanCanvas(onScan);
 
-    useVideoCanvas({
-        onDraw,
-        webcamVideoRef,
-        shouldDraw: canDetect,
-        canvasRef,
-        hasPermission,
-        zoom,
-    });
+  useVideoCanvas({
+    onDraw,
+    webcamVideoRef,
+    shouldDraw: canDetect,
+    canvasRef,
+    hasPermission,
+    zoom,
+  });
 
-    return <div>
-        {hasPermission ? <div className={'scan-canvas-container'}>
-            <div className={'scan-canvas-video'}>
-             <video ref={webcamVideoRef} width={videoWidth} height={videoHeight} />
-            </div>
-            <div className={'scan-canvas'}>
-             <canvas ref={canvasRef} width={canvasWidth} height={canvasHeight} />
-            </div>
-            <div className={'scanned-codes'}>
-                <textarea rows={10} cols={100} readOnly={true} value={codes.join('\n')} />
-            </div>
-        </div> : null}
-    </div>;
+  return (
+    <div>
+      {hasPermission ? (
+        <div className={"scan-canvas-container"}>
+          <div className={"scan-canvas-video"}>
+            <video
+              ref={webcamVideoRef}
+              width={videoWidth}
+              height={videoHeight}
+            />
+          </div>
+          <div className={"scan-canvas"}>
+            <canvas ref={canvasRef} width={canvasWidth} height={canvasHeight} />
+          </div>
+          <div className={"scanned-codes"}>
+            <textarea
+              rows={10}
+              cols={100}
+              readOnly={true}
+              value={codes.join("\n")}
+            />
+          </div>
+        </div>
+      ) : null}
+    </div>
+  );
 };
 
 export default {
-    component: SeparateHooksStories,
-    title: 'Scanner/Separate Hooks',
+  component: SeparateHooksStories,
+  title: "Scanner/Separate Hooks",
 };
 
-const Template: ComponentStory<typeof SeparateHooksStories> = (args: any) => <SeparateHooksStories {...args}/>
+const Template: ComponentStory<typeof SeparateHooksStories> = (args: any) => (
+  <SeparateHooksStories {...args} />
+);
 
 export const SeparateHooks = Template.bind({});
-SeparateHooks.args = { zoom: 2, canvasWidth: 320, canvasHeight: 240, videoWidth: 640, videoHeight: 480 };
+SeparateHooks.args = {
+  zoom: 2,
+  canvasWidth: 320,
+  canvasHeight: 240,
+  videoWidth: 640,
+  videoHeight: 480,
+};

@@ -1,4 +1,4 @@
-import { MutableRefObject, useCallback, useEffect, useMemo, useState } from 'react';
+import { MutableRefObject, useEffect, useMemo, useState } from 'react';
 
 type DrawImageBounds = [number, number, number, number, number, number, number, number];
 
@@ -65,7 +65,7 @@ export const useVideoCanvas = (options: UseVideoCanvasOptions) => {
             canvas.height,
         ];
 
-    }, [canvasRef.current, webcamVideoRef.current, zoom]);
+    }, [canvasRef, webcamVideoRef, zoom]);
 
     const streamToCanvas = useMemo(() => () => {
         const videoElement = webcamVideoRef.current;
@@ -82,7 +82,7 @@ export const useVideoCanvas = (options: UseVideoCanvasOptions) => {
 
         window.setTimeout(streamToCanvas, timeoutDelay);
 
-    }, [shouldDraw, context]);
+    }, [bounds, onDraw, timeoutDelay, webcamVideoRef, shouldDraw, context]);
 
     useEffect(() => {
 
@@ -101,5 +101,5 @@ export const useVideoCanvas = (options: UseVideoCanvasOptions) => {
                 setHasListener(true);
             }
         }
-    }, [webcamVideoRef.current, hasPermission, context]);
+    }, [canvasRef, webcamVideoRef, hasListener, onPlay, shouldPlay, streamToCanvas, hasPermission, context]);
 };

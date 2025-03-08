@@ -29,7 +29,7 @@ export const useWebcam = (options: UseWebcamOptions = {}) => {
             { width: webcamVideoRef.current?.width ?? 640, height: webcamVideoRef.current?.height ?? 480 },
             deviceChoiceOptions ?? defaultDeviceChoiceOptions,
             );
-    }, [webcamVideoRef.current, deviceChoiceOptions]);
+    }, [webcamVideoRef, deviceChoiceOptions]);
 
     const { stream } = useDeviceStream(hasPermission, deviceList, combinedDeviceChoiceOptions);
     const { isStreaming } = useStreamToVideoElement(webcamVideoRef.current, stream, shouldPlay);
@@ -73,7 +73,7 @@ const useStreamToVideoElement = (
         }
 
         return () => { active = false; };
-    }, [stream, videoElement, isStreaming]);
+    }, [stream, videoElement, isStreaming, shouldPlay]);
 
     return { isStreaming };
 };

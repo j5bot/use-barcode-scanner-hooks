@@ -17,7 +17,7 @@ export const useGetDeviceList = (hasPermission: boolean, onDevices?: (deviceList
         }
 
         return () => { active = false; };
-    }, [hasPermission]);
+    }, [hasPermission, onDevices]);
 
     return { deviceList };
 };
