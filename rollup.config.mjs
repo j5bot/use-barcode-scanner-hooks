@@ -28,7 +28,10 @@ const makeDefaultConfig = (hooksOrComponents) => {
             plugins: [
                 resolve(),
                 commonjs(),
-                typescript({ tsconfig: `./tsconfig.json` }),
+                typescript({
+                    tsconfig: `./tsconfig.json`,
+                    exclude: ["**/stories"],
+                }),
                 postcss({
                     plugins: [autoprefixer()],
                     sourceMap: true,
