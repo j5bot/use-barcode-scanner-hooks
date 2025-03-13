@@ -2,7 +2,7 @@
   "name": "@j5bot/use-barcode-scanner-hooks",
   "repository": "https://github.com/j5bot/use-barcode-scanner-hooks.git",
   "license": "MIT",
-  "version": "0.1.2-alpha",
+  "version": "0.1.3-alpha",
   "private": false,
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
