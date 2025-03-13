@@ -32,7 +32,7 @@ jobs:
         with:
           always-auth: true
           node-version: 18
-          registry-url: https://npm.pkg.github.com/
+          registry-url: https://npmjs.org
       - run: yarn publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          NPM_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
