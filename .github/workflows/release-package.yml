@@ -1,13 +1,13 @@
 name: use-barcode-scanner-hooks
 
-#on:
-#  release:
-#    types: [created]
-
 on:
-  push:
-    branches:
-      - main
+  release:
+    types: [created]
+
+#on:
+#  push:
+#    branches:
+#      - main
 
 jobs:
   build:
@@ -32,7 +32,7 @@ jobs:
         with:
           always-auth: true
           node-version: 18
-          registry-url: https://npmjs.org
+          registry-url: https://npm.pkg.github.com/
       - run: yarn publish
         env:
-          NPM_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}

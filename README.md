@@ -1,4 +1,4 @@
-# @use-barcode-scanner/hooks
+# use-barcode-scanner-hooks
 
 A set of React hooks for using a webcam as a barcode scanner.
 
@@ -15,7 +15,7 @@ available, the `@undecaf/barcode-detector-polyfill` is used instead.
 ## Usage
 
 Reference the Storybook stories for an example of implementation, as well as the
-companion package `@use-barcode-scanner/components`.
+companion package `use-barcode-scanner-components`.
 
 ## API
 

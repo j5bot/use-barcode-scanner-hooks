@@ -1,5 +1,5 @@
 {
-  "name": "@use-barcode-scanner/hooks",
+  "name": "@j5bot/use-barcode-scanner-hooks",
   "repository": "https://github.com/j5bot/use-barcode-scanner-hooks.git",
   "license": "MIT",
   "version": "0.1.2-alpha",
@@ -22,7 +22,7 @@
   },
   "publishConfig": {
     "access": "public",
-    "registry": "https://npmjs.org"
+    "registry": "https://npm.pkg.github.com"
   },
   "eslintConfig": {
     "extends": [
