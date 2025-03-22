@@ -1,4 +1,0 @@
-.scan-canvas-container { position: relative; }
-.scan-canvas-video > video { filter: blur(3px); }
-.scan-canvas { position: absolute; top: 120px; left: 160px; }
-.scan-canvas > canvas { background-color: #eee9; }

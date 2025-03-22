@@ -1,5 +1,8 @@
 # use-barcode-scanner-hooks
 
+This project has moved to [@react-barcode-scanner/hooks](https://github.
+com/react-barcode-scanner/hooks)
+
 A set of React hooks for using a webcam as a barcode scanner.
 
 Created as part of a project for making a UPC reader for board games, the
